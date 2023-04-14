@@ -1,0 +1,32 @@
+.header {
+    padding: 20px;
+
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__pages {
+        display: flex;
+        
+    }
+
+    &__subwrapper {
+        display: flex;
+    }
+
+    &__link {
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+        &:hover {
+            color: orange
+        }
+    }
+}
+.header-element {
+    font-size: 20px;
+    &:nth-child(n):not(:last-child) {
+        margin-right: 20px;
+    }
+}

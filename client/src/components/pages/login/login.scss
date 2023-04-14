@@ -1,0 +1,47 @@
+.login {
+    &__page {
+        min-height: 100vh;
+    }
+    &__wrapper {
+        padding: 100px 0;
+    }
+    &__form {
+        margin: 0 auto;
+        max-width: 50%;
+    }
+    &__title {
+        text-align: center;
+    }
+    &__submit {
+        display: block;
+        margin: 40px auto 0 auto; 
+        padding: 7px 20px;
+        border: none;
+        font-size: 18px;
+        border-radius: 3px;
+        transition: .2s all;
+        cursor: pointer;
+        &:hover {
+            background-color: #aaa;
+        }
+    }
+}
+.form-login {
+    &__label {
+        display: flex;
+        flex-direction: column;
+        &:nth-child(n):not(:first-child) {
+            margin-top: 20px;
+        }
+        span {
+            font-weight: 500;
+        }
+    }
+    &__input {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        margin-top: 10px;
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,97 @@
+.addPost {
+    padding: 100px 0 0 0;
+    &__form {
+        width: 50%;
+        margin: 0 auto;
+    }
+    &__label {
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        &:nth-child(n):not(:first-child) {
+            margin-top: 20px;
+        }
+    }
+    &__input {
+        padding: 0 20px;
+        border: 3px solid darken(rgb(121, 127, 143), 20%);
+        border-radius: 15px;
+        height: 50px;
+        font-size: 16px;
+        margin-top: 10px;
+        color: #000;
+        background-color: rgb(121, 127, 143);
+        outline: none;
+        cursor: pointer;
+        &::placeholder {
+            color: #333;
+        }
+    }
+    &__textarea {
+        padding: 10px;
+        font-size: 16px;
+        color: #000;
+        background-color: rgb(121, 127, 143);
+        outline: none;
+        border-radius: 15px;
+        border: 3px solid darken(rgb(121, 127, 143), 20%);
+        margin-top: 10px;
+        resize: none;
+        cursor: pointer;
+        &::placeholder {
+            color: #333;
+        }
+    }
+    &__btns {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        margin-top: 20px;
+    }
+    &__btn {
+        width: 100px;
+        height: 40px;
+        border: none;
+        color: #fff;
+        transition: .3s all ease;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    &__img {
+        margin-top: 10px;
+        img {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+        }
+    }
+}
+
+.labelForFile {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border: 2px dashed #444;
+    background-color: rgb(121, 127, 143);
+    cursor: pointer;
+}
+
+.inputForFile {
+    display: none;
+}
+
+.btn-submit {
+    background-color: rgb(121, 127, 143);
+    &:hover {
+        background-color: darken(rgb(121, 127, 143), 10%)
+    }
+}
+.btn-danger {
+    background-color: rgb(252, 76, 76);
+    &:hover {
+        background-color: darken(rgb(252, 76, 76), 10%)
+    }
+}

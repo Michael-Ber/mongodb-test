@@ -4,6 +4,7 @@
     &__wrapper {
         display: flex;
         justify-content: space-between;
+        
     }
 
     &__pages {
@@ -17,7 +18,7 @@
 
     &__link {
         text-decoration: none;
-        color: #333;
+        color: #777;
         font-weight: 600;
         &:hover {
             color: orange
@@ -28,5 +29,17 @@
     font-size: 20px;
     &:nth-child(n):not(:last-child) {
         margin-right: 20px;
+    }
+    &__btn {
+        padding: 7px 10px;
+        background-color: transparent;
+        font-size: 18px;
+        color: #333;
+        border: none;
+        transition: .3s all ease;
+        cursor: pointer;
+        &:hover {
+            color: orange;
+        }
     }
 }

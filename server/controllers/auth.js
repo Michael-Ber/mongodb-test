@@ -1,5 +1,8 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
+import jwt from "jsonwebtoken";
+import path, {dirname} from 'path';
+import { fileURLToPath } from "url";
 
 //Register
 export const register = async(req, res) => {
@@ -13,10 +16,16 @@ export const register = async(req, res) => {
         const isUsed = await User.findOne({name: username});
         if(isUsed) return res.json({message: "This user is already used"}); 
 
-
+        
         const newUser = new User({name: username, password: hash});
+        const token = jwt.sign(
+            { id: newUser._id },
+            process.env.JWT_SECRET,
+            {expiresIn: '30d'}
+        );
+        
         await newUser.save();
-        return res.json({newUser, message: "OK"})
+        return res.json({newUser, token, message: "OK"})
 
     } catch (error) {
         return res.json({message: "Error while creating user"})
@@ -26,8 +35,36 @@ export const register = async(req, res) => {
 
 //Login
 
-export const login = () => {}
+export const login = async(req, res) => {
+    try {
+        const {name, password} = req.body;
+        
+        //check user exist
+        const user = await User.findOne({name});
+        if(!user) return res.json({message: "No such a user"});
 
-//getMe
+        //check password correct
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if(!isPasswordCorrect) return res.send({message: "Incorrect password"});
 
-export const getMe = () => {}
+        //check are we login already? if we are not in system we haven't got token
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '30d'})
+        return res.json({token, user, message: "You are successfully login"})
+
+    } catch (error) {
+        return res.send({message: "No access"})
+    }
+}
+
+//getMe обрабатывает обновление страницы
+
+export const getMe = async(req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        if(!user) return res.json({message: "No such a user"});
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '30d'});
+        return res.json({user, token})
+    } catch (error) {
+        return res.send({message: "No access"})
+    }
+}

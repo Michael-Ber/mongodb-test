@@ -14,12 +14,12 @@
     }
     &__submit {
         display: block;
-        margin: 40px auto 0 auto; 
         padding: 7px 20px;
         border: none;
         font-size: 18px;
         border-radius: 3px;
         transition: .2s all;
+        margin-right: 20px;
         cursor: pointer;
         &:hover {
             background-color: #aaa;
@@ -43,5 +43,19 @@
         border: none;
         margin-top: 10px;
         font-size: 18px;
+    }
+    &__btns {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+    }
+    &__link {
+        color: #333;
+        text-decoration: none;
+        transition: .3s all ease;
+        &:hover {
+            color: orange
+        }
     }
 }

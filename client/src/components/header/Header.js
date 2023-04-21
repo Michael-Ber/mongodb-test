@@ -1,27 +1,71 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { checkIsAuth, logout } from "../../redux/features/auth/authSlice";
+import {toast} from 'react-toastify'
 import './header.scss';
 
 const Header = () => {
+    const isAuth = useSelector(checkIsAuth);
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        window.localStorage.removeItem('token');
+        toast("You are logout")
+    }
+
+    const activeStyles = {
+        color: "#fff"
+    }
+
     return (
         <header className="header">
+            
             <div className="header__wrapper">
-                <div className="header__pages">
+                <div className="header__logo header-element">
+                    <Link 
+                        to={"/"}
+                        className="header__link">
+                            Logo
+                    </Link>                    
+                </div>
+                {isAuth && <div className="header__pages">
                     <div className="header__logo header-element">
-                        <Link to={"/"} className="header__link">Logo</Link>                    
+                        <NavLink 
+                            to={"/"}
+                            style={({isActive}) => isActive ? activeStyles : null} 
+                            className="header__link">
+                                Main
+                        </NavLink>                    
                     </div>
                     <div className="header__about header-element">
-                        <Link to={"/about"} className="header__link">About</Link>
+                        <NavLink 
+                            to={"/posts"} 
+                            style={({isActive}) => isActive ? activeStyles : null} 
+                            className="header__link">
+                                Posts
+                        </NavLink>
                     </div>
                     <div className="header__contacts header-element">
-                        <Link to={"/contacts"} className="header__link">Contacts</Link>
+                        <NavLink 
+                            to={"/newPost"} 
+                            style={({isActive}) => isActive ? activeStyles : null} 
+                            className="header__link">
+                                Add post
+                        </NavLink>
                     </div>
-                </div>
+                </div>}
                 <div className="header__subwrapper">
                     <div className="header__login header-element">
-                        <Link to={"/login"} className="header__link">Sign in</Link>
-                    </div>
-                    <div className="header__reg header-element">
-                        <Link to={"/registration"} className="header__link">Register</Link>
+                        {
+                        isAuth ? 
+                        <button onClick={handleLogout} className="header-element__btn">Sign out</button> : 
+                        <Link 
+                            to={"/login"} 
+                            className="header__link">
+                                Sign in
+                        </Link>
+                        }
                     </div>
                 </div>
 

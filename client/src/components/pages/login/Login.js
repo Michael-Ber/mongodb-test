@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, checkIsAuth } from '../../../redux/features/auth/authSlice';
+import {toast} from "react-toastify";
 import './login.scss';
 
 const Login = () => {
     const [name, setName] = useState(''); 
     const [password, setPassword] = useState(''); 
-    const [newUser, setNewUser] = useState(); 
+    const dispatch = useDispatch();
+    const status = useSelector(state => state.auth.status);
+    const isAuth = useSelector(checkIsAuth);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(newUser);
-    }, [newUser])
+        if(status) toast(status);
+        if(isAuth) navigate("/");
+    }, [status, navigate, isAuth])
 
-    const onSubmit = async(e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        const user = {name, password};
-        const response = await fetch("http://localhost:3002/api/auth/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        }).then(res => res.json())
-        .then(res => setNewUser(res))
-        .finally(() => {setName(''); setPassword('')})
+        dispatch(loginUser({name, password}));
+        setName('');
+        setPassword('');
     }
 
 
@@ -29,7 +30,7 @@ const Login = () => {
     return (
         <div className="login__page">
             <div className="login__wrapper">
-                <h1 className='login__title'>Registration Form</h1>
+                <h1 className='login__title'>Sign in Form</h1>
                 <form onSubmit={(e) => onSubmit(e)} className="login__form form-login">
                     <label htmlFor="name" className="form-login__label">
                         <span>Enter your name</span>
@@ -46,12 +47,15 @@ const Login = () => {
                         <input 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            type="text" 
+                            type="password" 
                             name="password" 
                             id="password" 
                             className="form-login__input" />
                     </label>
-                    <button type='submit' className="login__submit">Submit</button>
+                    <div className="form-login__btns">
+                        <button type='submit' className="login__submit">Sign in</button>
+                        <Link to={"/registration"} className="form-login__link">Do not have account yet?</Link>
+                    </div>
                 </form>
             </div>
         </div>

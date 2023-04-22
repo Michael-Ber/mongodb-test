@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { checkIsAuth, logout } from "../../redux/features/auth/authSlice";
 import {toast} from 'react-toastify'
@@ -7,10 +7,12 @@ import './header.scss';
 const Header = () => {
     const isAuth = useSelector(checkIsAuth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(logout());
         window.localStorage.removeItem('token');
+        navigate("/");
         toast("You are logout")
     }
 
@@ -40,10 +42,10 @@ const Header = () => {
                     </div>
                     <div className="header__about header-element">
                         <NavLink 
-                            to={"/posts"} 
+                            to={"/myPosts"} 
                             style={({isActive}) => isActive ? activeStyles : null} 
                             className="header__link">
-                                Posts
+                                My Posts
                         </NavLink>
                     </div>
                     <div className="header__contacts header-element">

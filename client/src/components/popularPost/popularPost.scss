@@ -1,25 +1,18 @@
-.posts-main {
-    color: #fff;
-    &__link {
-        text-decoration: none;
-    }
-}
-.item-posts {
-    color: #fff;
+.item-popular-posts {
     &:nth-child(n):not(:last-child) {
         margin-bottom: 50px;
+    }
+
+    &__author, &__title {
+        text-transform: uppercase;
     }
     &__upper {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
-    &__author, &__title {
-        text-transform: uppercase;
-    }
     &__img {
-        width: 100%;
+        width: 200px;
         margin-bottom: 20px;
         img {
             max-width: 100%;

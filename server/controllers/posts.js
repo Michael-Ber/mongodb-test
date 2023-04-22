@@ -41,3 +41,41 @@ export const getAll = async(req, res) => {
         res.json({message: "Bad request on getting posts"})
     }
 }
+
+export const getById = async(req, res) => {
+    try {
+        const post = await Post.findByIdAndUpdate(req.params.id, {
+            $inc: { views: 1 }
+        });
+        return res.json(post);
+
+    } catch (error) {
+        res.json({message: "Bad request on getting post by id"})
+    }
+}
+
+
+export const getMyPosts = async(req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        const list = await Promise.all(
+            user.posts?.map(item => Post.findById(item._id))
+        )
+        return res.json(list);
+    } catch (error) {
+        res.json({message: "Bad request on getting my posts"})
+    }
+}
+
+export const deletePost = async(req, res) => {
+    try {
+        const post = await Post.findByIdAndDelete(req.params.id);
+        if(!post) return res.json({message: 'No such a post'})
+        await User.findByIdAndUpdate(req.userId, {
+            $pull: {posts: req.params.id}
+        });
+        return res.json({post, message: "Post was deleted"})
+    } catch (error) {
+        res.json({message: "Bad request on deleteing post"})
+    }
+}

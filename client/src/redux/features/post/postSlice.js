@@ -61,6 +61,26 @@ export const deletePost = createAsyncThunk(
     }   
 )
 
+export const editPost = createAsyncThunk(
+    "post/editPost",
+    async(data) => {
+        try {
+            const resp = await fetch(`http://localhost:3002/api/posts/${data.id}`, {
+                method: "PUT",
+                headers: {
+                    "authorization": "Bearer " + window.localStorage.getItem('token')
+                },
+                body: data
+            });
+            const respJSON = await resp.json();
+            return respJSON
+        } catch (error) {
+            console.log(error)
+        }
+    
+    }   
+)
+
 const postSlice = createSlice({
     name: "post",
     initialState,
@@ -80,6 +100,16 @@ const postSlice = createSlice({
         [deletePost.pending]: state => {state.loading = true},
         [deletePost.fulfilled]: (state, action) => {state.loading = false; state.posts = state.posts.filter(item => item._id !== action.payload.post._id); state.popularPosts = action.payload.popularPosts},
         [deletePost.rejected]: (state, action) => {state.loading = false},
+
+        //EditPost
+        [editPost.pending]: state => {state.loading = true},
+        [editPost.fulfilled]: (state, action) => {
+            state.loading = false; 
+            const index = state.posts.findIndex((post) => post._id === action.payload._id);
+            console.log(state.posts);
+            state.posts[index] = action.payload;
+        },
+        [editPost.rejected]: (state, action) => {state.loading = false},
     }
 });
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AiFillEye, AiOutlineMessage, AiTwotoneEdit, AiFillDelete } from 'react-icons/ai';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { deletePost } from '../../../redux/features/post/postSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -13,13 +13,15 @@ export const PostPage = () => {
     const params = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth)
+    const location = useLocation().pathname;
+    const { user } = useSelector(state => state.auth);
+
     const fetchPost = useCallback(async() => {
         const resp = await fetch(`http://localhost:3002/api/posts/${params.id}`);
         const respJSON = await resp.json();
         setPost(respJSON);
     }, [params.id])
-    
+    console.log(useLocation())
     useEffect(() => {
         fetchPost();
     }, [fetchPost])
@@ -28,6 +30,7 @@ export const PostPage = () => {
         dispatch(deletePost(params.id));
         navigate("/");
     }
+    console.log(post.imgUrl);
 
   return (
     <div className="post">
@@ -37,13 +40,13 @@ export const PostPage = () => {
                 {user._id === post.author && (
                     <>
                         <button onClick={deleteHandler} className='post__btn post__delete'>Delete</button>
-                        <button onClick={() => {}} className='post__btn post__edit'>Edit</button>
+                        <Link to={`${location}/edit`} className='post__btn post__edit'>Edit</Link>
                     </>
                 )}
                 
 
             </div>
-            <div className={post.imgUrl ? "post__img" : "post__no-img"}>
+            <div className={post.imgUrl !== '' ? "post__img" : "post__no-img"}>
             {post.imgUrl && <img src={`http://localhost:3002/${post.imgUrl}`} alt={`${post.title}`} />}
             </div>
             <div className="item-posts__upper">

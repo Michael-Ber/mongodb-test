@@ -79,3 +79,23 @@ export const deletePost = async(req, res) => {
         res.json({message: "Bad request on deleteing post"})
     }
 }
+
+export const editPost = async(req, res) => {
+    try {
+        const { title, text, id } = req.body;
+        const post = await Post.findById(id);
+        if(req.files) {
+            let filename = Date.now().toString() + req.files.image.name;
+            const __dirname = dirname(fileURLToPath(import.meta.url));
+            req.files.image.mv(path.join(__dirname, '..', 'uploads', filename));
+            post.imgUrl = filename || '';
+        }
+
+        post.title = title;
+        post.text = text;
+        await post.save();
+        res.json(post);
+    } catch (error) {
+        res.json({message: "Bad request on getting posts"})
+    }
+}

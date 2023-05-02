@@ -1,5 +1,6 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import Comment from "../models/Comment.js";
 import path, {dirname} from "path";
 import { fileURLToPath } from "url";
 
@@ -97,5 +98,18 @@ export const editPost = async(req, res) => {
         res.json(post);
     } catch (error) {
         res.json({message: "Bad request on getting posts"})
+    }
+}
+
+export const getPostComments = async(req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if(!post) return res.json({message: 'No such a post'});
+        const list = await Promise.all(
+            post.comments?.map(cmt => Comment.findById(cmt._id))
+        )
+        return res.json(list);
+    } catch (error) {
+        res.json({message: "Bad request on getting post comments"})
     }
 }
